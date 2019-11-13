@@ -1,2 +1,2 @@
-require File.expand_path('../userinterface', __FILE__)
+require File.expand_path('../user_interface', __FILE__)
 UserInterface.start

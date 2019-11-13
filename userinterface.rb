@@ -85,7 +85,7 @@ class Dvcs  < Thor
 module UserInterface
 
     def UserInterface.start
-        Dvcs.start()
+        Dvcs.start
     end
     
 end

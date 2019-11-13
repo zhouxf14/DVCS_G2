@@ -7,7 +7,7 @@ module FP
   #
 
   def new_folder(folder_name)
-    if (system("mkdir #{folder_name}") and system("cd #{folder_name}") and system("cd .."))
+    if system("mkdir #{folder_name}") and system("cd #{folder_name}") and system("cd ..")
       true
     else
       puts("Error building folder #{folder_name}")
@@ -16,7 +16,7 @@ module FP
   end
 
   def new_file(filename)
-    if (system("touch #{filename}"))
+    if system("touch #{filename}")
       true
     else
       puts("Error building file #{filename}")
@@ -25,7 +25,7 @@ module FP
   end
 
   def append_text(text,filename)
-    if (system("\"#{text}\" >> #{filename}"))
+    if system("\"#{text}\" >> #{filename}")
       true
     else
       puts("Error appending text to #{filename}")
@@ -35,7 +35,7 @@ module FP
 
   #check whether or not folder 'query' exists in the current directory
   def check_folder_contents(query)
-    if (system("[ -d #{query} ]"))
+    if system("[ -d #{query} ]")
       puts("Error in current directory: #{query} already exists.")
       false
     else
@@ -48,11 +48,11 @@ module FP
     #if there isn't a dvcs folder
     if check_folder_contents("dvcs")
       #build and enter the dvcs folder
-      if (new_folder("dvcs") and system("cd dvcs"))
+      if new_folder("dvcs") and system("cd dvcs")
         #build folders inside the dvcs folder
-        if (new_folder("hooks") and new_folder("info") and new_folder("objects") and new_folder("refs"))
+        if new_folder("hooks") and new_folder("info") and new_folder("objects") and new_folder("refs")
           #build files inside the dvcs folder
-          if (new_file("config") and new_file("description") and new_file("HEAD") and new_file("index"))
+          if new_file("config") and new_file("description") and new_file("HEAD") and new_file("index")
             #if everything works, navigate back out, and return success.
             system("cd ..")
             true

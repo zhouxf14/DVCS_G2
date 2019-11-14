@@ -56,14 +56,21 @@ module FileSystem
     #if there isn't a dvcs folder
     if check_folder_contents("dvcs")
       #build and enter the dvcs folder
-      if (new_folder("dvcs") and system("cd","dvcs"))
+      if (new_folder("dvcs") and Dir.chdir('dvcs'))
         #build folders inside the dvcs folder
-        if (new_folder("hooks") and new_folder("info") and new_folder("objects") and new_folder("refs"))
+        if (new_folder("info") and new_folder("objects") and new_folder("refs"))
           #build files inside the dvcs folder
           if (new_file("config") and new_file("description") and new_file("HEAD") and new_file("index"))
             #if everything works, navigate back out, and return success.
             system("cd ..")
             true
+          end
+          if (Dir.chdir('objects') and new_folder("temp") and new_folder("repository"))
+            #build sub folders temp and repository under objects folder
+            true
+          else
+            puts("error building folders")
+            false
           end
         else
           puts("error building folders")

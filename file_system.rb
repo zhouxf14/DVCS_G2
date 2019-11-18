@@ -61,15 +61,19 @@ module FileSystem
         if (new_folder("info") and new_folder("objects") and new_folder("refs"))
           #build files inside the dvcs folder
           if (new_file("config") and new_file("description") and new_file("HEAD") and new_file("index"))
-            #if everything works, navigate back out, and return success.
-            system("cd ..")
-            true
-          end
-          if (Dir.chdir('objects') and new_folder("temp") and new_folder("repository"))
-            #build sub folders temp and repository under objects folder
-            true
+            #build sub-folders temp and repository inside objects folder
+            if (Dir.chdir('objects') and new_folder("temp") and new_folder("repository"))
+              #escape back outside of dvcs folder to working directory
+              system("cd ..")
+              system("cd ..")
+              #return success- all other return cases are for errors.
+              true
+            else
+              puts("error building folders")
+              false
+            end
           else
-            puts("error building folders")
+            puts("error building files")
             false
           end
         else

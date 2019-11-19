@@ -1,26 +1,34 @@
-def compileModule()
-    if RUBY_PLATFORM.include? "mingw32"
-        return system('.\\Haskell-Source\\make.bat')
-    else
-        print "The operating system is #{RUBY_PLATFORM} which is currently not supported"
-        return false
+require 'open3'
+
+CMD = "ghci -ibin -odir bin -v0 -fobject-code -ignore-dot-ghci -no-keep-hi-files"
+SOURCE_DIR = "Haskell-Source"
+
+def runHaskell(script)
+    err = ""; result = ""
+    
+    Open3.popen3(CMD) do |stdin, stdout, stderr, wait_thr|
+        stdin.puts script
+        stdin.close
+
+        err = stderr.read
+        result = stdout.read        
     end
+
+    return result unless err != ""
+    raise err
+end
+
+def getHEAD(str)
+    script = ":cd " + SOURCE_DIR + "\n" +
+             ":load GetHEAD.hs\n" +
+             ":main " + str + "\n" +
+             ":quit"
+
+    return runHaskell(script)
 end
 
 def main()
-    if compileModule()
-        print "Module Compiled\n"
-    else
-        print "Module not compiled"
-        return ""
-    end
+    puts getHEAD("Commit: 123454324342") 
+end      
 
-    if RUBY_PLATFORM.include? "mingw32"
-        return `.\\module.exe #{ARGV.join(' ')} 2> nul`
-    else
-        print "The operating system is #{RUBY_PLATFORM} which is currently not supported"
-        return ""
-    end
-end
-
-print main()
+main()

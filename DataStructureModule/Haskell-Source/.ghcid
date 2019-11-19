@@ -1,2 +1,0 @@
---command=ghci index.hs
---test=":main getHEAD Commit: 2012939459211"

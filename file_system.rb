@@ -54,9 +54,21 @@ module FileSystem
   def read_lines(file_name)
     File.open("#{file_name}") do |file|
       file.each_line do |line|
-        yield(line)
+        yield(line.chomp("\n"))
       end
     end
+  end
+  
+  #returns line number given text is found in, or -1 if it is not found.
+  def search_file(text,file_name)
+    line_num = 0
+    file_name.read_lines do |line|
+      if line.include? text
+        return line_num
+      end
+      line_num += 1
+    end
+    return -1
   end
 
 end

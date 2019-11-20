@@ -14,7 +14,7 @@ class Dvcs  < Thor
         #In .dvcs folder we have folder: 
         #objects: to store all the data, include two sub folders one for the stage and another one for repository
         #ref: to store the points which point to the branch committed data object
-        Init.creat_repository(Dir.pwd)
+        Init.create_repository(Dir.pwd)
     end
   
     desc "add FILE_NAME","Add specific files that you want to track"

@@ -89,5 +89,13 @@ module FileSystem
       false
     end
   end
+  
+  def read_lines(file_name)
+    File.open("#{file_name}") do |file|
+      file.each_line do |line|
+        yield(line)
+      end
+    end
+  end
 
 end

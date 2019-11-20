@@ -1,7 +1,16 @@
+require_relative '../file_system'
+
 require 'open3'
 
 CMD = "ghci -ibin -odir bin -v0 -fobject-code -ignore-dot-ghci -no-keep-hi-files"
 SOURCE_DIR = "Haskell-Source"
+
+ROOT = "./dvcs/"
+INDEX = ROOT + "index"
+
+class FS
+    include FileSystem
+end
 
 def runHaskell(script)
     err = ""; result = ""
@@ -18,17 +27,34 @@ def runHaskell(script)
     raise err
 end
 
-def getHEAD(str)
-    script = ":cd " + SOURCE_DIR + "\n" +
-             ":load GetHEAD.hs\n" +
-             ":main " + str + "\n" +
-             ":quit"
+module DataStructure
+    def DataStructure.getHEAD(str)
+        script = ":cd " + SOURCE_DIR + "\n" +
+                ":load GetHEAD.hs\n" +
+                ":main " + str + "\n" +
+                ":quit"
 
-    return runHaskell(script)
-end
+        return runHaskell(script)
+    end
+
+    def DataStructure.add(file_path)
+        fp = FS.new
+        #First see if it has already been added
+        added = false
+        fp.read_lines(INDEX) {|line| added = added || File.realdirpath(line.strip) == File.realdirpath(file_path)}        
+        return "This file is already being tracked" if(added)
+        
+        #Now we do the hard work of adding the file
+        fp.append_text("#{file_path}\n",INDEX)
+    end
+end 
 
 def main()
-    puts getHEAD("Commit: 123454324342") 
+    #fp = FS.new
+    #fp.new_folder ".\\daryl"
+    #puts DataStructure.getHEAD("Commit: 123454324342") 
+
+    puts(DataStructure.add "daryl.txt")
 end      
 
 main()

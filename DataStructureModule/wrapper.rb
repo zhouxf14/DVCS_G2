@@ -41,11 +41,12 @@ module DataStructure
         fp = FS.new
         #First see if it has already been added
         added = false
-        fp.read_lines(INDEX) {|line| added = added || File.realdirpath(line.strip) == File.realdirpath(file_path)}        
+        fp.read_lines(INDEX) {|line| added = added || File.realdirpath(line) == File.realdirpath(file_path)}        
         return "This file is already being tracked" if(added)
         
         #Now we do the hard work of adding the file
         fp.append_text("#{file_path}\n",INDEX)
+        return "Uh, it worked I suppose"
     end
 end 
 

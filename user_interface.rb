@@ -1,4 +1,5 @@
 require File.expand_path('../init', __FILE__)
+require_relative 'DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'
 class Dvcs  < Thor
@@ -18,7 +19,9 @@ class Dvcs  < Thor
   
     desc "add FILE_NAME","Add specific files that you want to track"
     def add(file_name)
-      puts "this is add function file name is #{file_name}"
+      #TODO - check that the path is valid and that the file exists
+      #puts "this is add function file name is #{file_name}"      
+      puts DataStructure.add file_name
     end
     
     desc "clone PATH_URL","copy an existing repository"

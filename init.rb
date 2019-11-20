@@ -1,7 +1,7 @@
 require File.expand_path('../file_system', __FILE__)
 module Init
     extend FileSystem
-    def Init.creat_repository(local_path)
+    def Init.create_repository(local_path)
         if (build_repo_structure(local_path))
             puts "Init repository success"
         end

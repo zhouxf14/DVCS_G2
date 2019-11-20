@@ -7,7 +7,7 @@ module FileSystem
   #
 
   def new_folder(folder_name)
-    if (system("mkdir #{folder_name}") and Dir.chdir("#{folder_name}") and system("cd .."))
+    if (system("mkdir #{folder_name}"))
       true
     else
       puts("Error building folder #{folder_name}")
@@ -47,45 +47,6 @@ module FileSystem
     if (system("[ -e #{query}]"))
       true
     else
-      false
-    end
-  end
-
-  #once we know that we can init files and folders, build the repo with empty folders and blank files.
-  def build_repo_structure()
-    #if there isn't a dvcs folder
-    if check_folder_contents("dvcs")
-      #build and enter the dvcs folder
-      if (new_folder("dvcs") and Dir.chdir('dvcs'))
-        #build folders inside the dvcs folder
-        if (new_folder("info") and new_folder("objects") and new_folder("refs"))
-          #build files inside the dvcs folder
-          if (new_file("config") and new_file("description") and new_file("HEAD") and new_file("index"))
-            #build sub-folders temp and repository inside objects folder
-            if (Dir.chdir('objects') and new_folder("temp") and new_folder("repository"))
-              #escape back outside of dvcs folder to working directory
-              system("cd ..")
-              system("cd ..")
-              #return success- all other return cases are for errors.
-              true
-            else
-              puts("error building folders")
-              false
-            end
-          else
-            puts("error building files")
-            false
-          end
-        else
-          puts("error building folders")
-          false
-        end
-      else
-        puts("error building dvcs folder")
-        false
-      end
-    else
-      puts("Error: dvcs folder already exists")
       false
     end
   end

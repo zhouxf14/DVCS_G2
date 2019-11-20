@@ -7,7 +7,7 @@ module FileSystem
   #
 
   def new_folder(folder_name)
-    if (system("mkdir #{folder_name}") and system("cd #{folder_name}") and system("cd .."))
+    if (system("mkdir #{folder_name}") and Dir.chdir("#{folder_name}") and system("cd .."))
       true
     else
       puts("Error building folder #{folder_name}")

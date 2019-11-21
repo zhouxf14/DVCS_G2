@@ -87,7 +87,7 @@ module FileSystem
   end
   
   def remove_folder(path)
-    if(check_folder_contents(path))
+    if(Dir.exist? (path))
       if(Dir.delete(path))
         True
       else

@@ -69,4 +69,8 @@ module FileSystem
     return File.read(path, 1073741824) || "" #Only reads a Gigabyte
   end
 
+  def list_contents(folder)
+    Dir.children(folder)
+  end
+
 end

@@ -42,7 +42,7 @@ class Dvcs  < Thor
   
     desc "heads","Show the current heads"
     def heads
-      puts "this is heads function"
+      puts DataStructure.HEADs
     end
   
     desc "diff TARGET_VERSION","Check the changes between revisions"

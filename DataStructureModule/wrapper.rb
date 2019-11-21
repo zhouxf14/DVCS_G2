@@ -6,7 +6,7 @@ require 'digest'
 module DataStructure
 
     CMD = "ghci -ibin -odir bin -v0 -fobject-code -ignore-dot-ghci -no-keep-hi-files"
-    SOURCE_DIR = "Haskell-Source"
+    SOURCE_DIR = "Haskell-Source" #This is wrong :P
 
     ROOT = "./.dvcs/"
     INDEX = ROOT + "index"
@@ -64,12 +64,11 @@ module DataStructure
     end
 
     def DataStructure.commit(message)
-        head = getHEAD()
         #We can do the first bit of the file text right off the bat
         fileText = message + "\n" +
                    getUser() + "\n" +
                    Time.now.to_s + "\n" +
-                   head + "\n"
+                   getHEAD() + "\n"
                 
         #Next iterate through the list of tracked files, and insure we have archives
         @@fp.read_lines(INDEX) { |line|
@@ -111,10 +110,32 @@ module DataStructure
         ) 
     end
 
+    def DataStructure.HEADs
+        return Hash[@@fp.list_contents(BRANCHES).map{|branch| [branch, @@fp.read(BRANCHES + branch)]}]
+    end
+
+    def DataStructure.checkout(branch)
+        return "#{branch} is already checked out" if @@fp.read(CURRENT_BRANCH) == branch
+        branches = @@fp.list_contents(BRANCHES)
+        if !branches.member? branch
+            @@fp.new_file(BRANCHES + branch, getHEAD())
+            @@fp.new_file(CURRENT_BRANCH, branch)
+            return "#{branch} added as new branch"
+        else
+            #Here I delete all the files in the repository
+            #Then I build them all anew from the archives
+            
+            #Code I want but not yet
+            #@@fp.new_file(HEAD, @@fp.read(BRANCHES + branch))
+            #@@fp.new_file(CURRENT_BRANCH, branch)
+            return "Oh no :O"
+        end        
+    end
+
 end 
 
 def main()
-    puts DataStructure.log()
+    puts DataStructure.checkout("master")
 end      
 
 if __FILE__ == $0

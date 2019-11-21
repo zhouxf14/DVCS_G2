@@ -66,8 +66,8 @@ class Dvcs  < Thor
     end
   
     desc "log [<options>] [<revision range>] [[--] <path>…]","View the changelog"
-    def log(options,range,path)
-      puts "this is log function the option is #{options} the range is #{range} the path is #{path}"
+    def log(options=:nah,range=:options,path=:suck) #And these aren't even optional options!
+      puts DataStructure.log
     end
   
     desc "merge BRANCH_1, BRANCH_2","Merge two revisions"

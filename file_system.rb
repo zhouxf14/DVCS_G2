@@ -37,7 +37,7 @@ module FileSystem
     File.open(file_name) do |file|
       lineno.times{ file.gets }
     end
-    return $_
+    return $_.chomp("\n")
   end
   
   #returns line number given text is found in, or -1 if it is not found.

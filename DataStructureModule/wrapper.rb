@@ -97,10 +97,24 @@ module DataStructure
 
         return commitName
     end
+
+    def DataStructure.log(commit = nil, output = "")
+        commit = getHEAD() if !commit
+        return output if commit == "null"
+
+        return log(@@fp.get_line(COMMITS + commit,4),
+            output +
+            "commit " + commit + "\n" +
+            "Author:\t" + @@fp.get_line(COMMITS + commit,2) + "\n" +
+            "Date:\t" + @@fp.get_line(COMMITS + commit,3) + "\n" +
+            "\n\t" + @@fp.get_line(COMMITS + commit,1) + "\n\n"
+        ) 
+    end
+
 end 
 
 def main()
-    #None for now
+    puts DataStructure.log()
 end      
 
 if __FILE__ == $0

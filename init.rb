@@ -13,9 +13,16 @@ module Init
           #build and enter the dvcs folder
           if (Init.new_folder(".dvcs") and  system ("cd "+dvcspath))
             #build folders inside the dvcs folder
-            if (Init.new_folder(dvcspath+"/info") and Init.new_folder(dvcspath+"/objects") and Init.new_folder(dvcspath+"/refs"))
+            if (Init.new_folder(dvcspath+"/info") &&
+                Init.new_folder(dvcspath+"/objects") &&
+                Init.new_folder(dvcspath+"/refs") &&
+                Init.new_folder(dvcspath+"/objects/commits") &&
+                Init.new_folder(dvcspath+"/objects/archives") &&
+                Init.new_file(dvcspath+"/refs/master","null") &&
+                Init.new_file(dvcspath+"/info/branch","master")
+            )
               #build files inside the dvcs folder
-              if (Init.new_file(dvcspath+"/config") and Init.new_file(dvcspath+"/description") and Init.new_file(dvcspath+"/HEAD") and Init.new_file(dvcspath+"/index"))
+              if (Init.new_file(dvcspath+"/config") and Init.new_file(dvcspath+"/description") and Init.new_file(dvcspath+"/HEAD", "null") and Init.new_file(dvcspath+"/index"))
                 #build sub-folders temp and repository inside objects folder
                 if ( Init.new_folder(dvcspath+"/objects/temp") and Init.new_folder(dvcspath+"/objects/repository"))
                   #escape back outside of dvcs folder to working directory

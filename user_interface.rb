@@ -15,6 +15,7 @@ class Dvcs  < Thor
         #objects: to store all the data, include two sub folders one for the stage and another one for repository
         #ref: to store the points which point to the branch committed data object
         Init.create_repository(Dir.pwd)
+        DataStructure.commit("Baby's first commit")
     end
   
     desc "add FILE_NAME","Add specific files that you want to track"
@@ -62,6 +63,7 @@ class Dvcs  < Thor
     desc "commit UPDATE_COMMENT","Commit changes"
     def commit(update_comment)
       puts "this is commit function the comment is #{update_comment}"
+      puts DataStructure.commit update_comment
     end
   
     desc "log [<options>] [<revision range>] [[--] <path>…]","View the changelog"

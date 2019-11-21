@@ -7,30 +7,19 @@ module FileSystem
   #
 
   def new_folder(folder_name)
-    if (system("mkdir #{folder_name}"))
-      true
-    else
-      puts("Error building folder #{folder_name}")
-      false
-    end
+    Dir.mkdir(folder_name)
   end
 
-  def new_file(filename)
-    if (system("touch #{filename}"))
-      true
-    else
-      puts("Error building file #{filename}")
-      false
-    end
+  def new_file(filename, text = "")
+    File.open(filename, "w") { |file|
+      file.write text
+    }
   end
 
-  def append_text(text,filename)
-    if (system("\"#{text}\" >> #{filename}"))
-      true
-    else
-      puts("Error appending text to #{filename}")
-      false
-    end
+  def append_text(filename, text)
+    File.open(filename, "a") { |file|
+      file.write text
+    }
   end
 
   #check whether or not folder 'query' exists in the current directory
@@ -44,19 +33,22 @@ module FileSystem
   end
 
   def check_file_exists(query)
-    if (system("[ -e #{query}]"))
-      true
-    else
-      false
-    end
+    return File.exist? query
   end
-  
+
   def read_lines(file_name)
-    File.open("#{file_name}") do |file|
+    File.open(file_name) do |file|
       file.each_line do |line|
         yield(line.chomp("\n"))
       end
     end
+  end
+
+  def get_line(file_name, lineno)
+    File.open(file_name) do |file|
+      lineno.times{ file.gets }
+    end
+    return $_
   end
   
   #returns line number given text is found in, or -1 if it is not found.
@@ -69,6 +61,23 @@ module FileSystem
       line_num += 1
     end
     return -1
+  end
+
+  def store(old_path, new_path)
+    #File.open(new_path, "w") { |file|
+    #  read_lines(old_path){|line|
+    #    file.puts line
+    #  }
+    #}
+    IO.copy_stream(old_path, new_path)
+  end
+
+  def retrieve(path)
+    return File.read(path, 1073741824) || "" #Only reads a Gigabyte
+  end
+
+  def read(path)
+    return File.read(path, 1073741824) || "" #Only reads a Gigabyte
   end
 
 end

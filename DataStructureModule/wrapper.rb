@@ -43,15 +43,6 @@ module DataStructure
 
     @@fp = FS.new
 
-    def DataStructure.getHEAD_old(str)
-        script = ":cd " + SOURCE_DIR + "\n" +
-                ":load GetHEAD.hs\n" +
-                ":main " + str + "\n" +
-                ":quit"
-    
-        return runHaskell(script)
-    end
-
     def DataStructure.getHEAD()
         return @@fp.get_line(HEAD, 1)
     end
@@ -79,62 +70,37 @@ module DataStructure
                    getUser() + "\n" +
                    Time.now.to_s + "\n" +
                    head + "\n"
-        
-        #Now we do the hard part of insuring all our tracked files are archived and accounted for
-
-        #Start by gathering up the previous commit's info
-        #previousArchives = Hash.new; lineno = 0
-        
-        #@@fp.read_lines(COMMITS + head){ |line| 
-        #    lineno += 1; 
-        #    previousArchives.store(*line.split) if lineno > 4
-        #} unless head == "null"
                 
-        #Next iterate through the list of tracked files
+        #Next iterate through the list of tracked files, and insure we have archives
         @@fp.read_lines(INDEX) { |line|
+            # We have to check if the file still exists and ignore it if it doesn't
             if (@@fp.check_file_exists line)
+                # This part is deceptively simple
+                # Because each archived file has a unique name based on it's name AND content
+                # All we have to do is check if a file with that unique name exists
+                # They're guaranteed to match content! So we don't have to rearchive 
+                # or check an old commit or do any sor of file comparison.
                 archiveName = hash(line + @@fp.read(line))
                 @@fp.store(line, ARCHIVES + archiveName) unless @@fp.check_file_exists(ARCHIVES + archiveName)
                 fileText += line + " " + archiveName + "\n"
-                
-                #if previousArchives[line]
-                #    if(@@fp.retrieve(previousArchives[line]) == @@fp.read(line))
-                #        puts "Same"
-                #        fileText += line + " " + previousArchives[line] + "\n"
-                #    else
-                #        puts "Diff"
-                #        archiveName = hash(line + @@fp.read(line))
-                #        @@fp.store(line, ARCHIVES + archiveName)
-                #        fileText += line + " " + archiveName + "\n"
-                #    end
-                #else
-                #    archiveName = hash(line + @@fp.read(line))
-                #    @@fp.store(line, ARCHIVES + archiveName)
-                #    fileText += line + " " + archiveName + "\n"
-                #end
             else
                 #TODO - If file doesn't exist we can presumably remove it from the index
                 puts "Oh wow, #{line} was deleted by the user and so will be ignored by commit"
             end
         }
 
+        #Now we just make the commit file and update the branch pointer and HEAD pointer
         commitName = hash(fileText)
         @@fp.new_file(COMMITS + commitName, fileText)
         @@fp.new_file(HEAD, commitName)
         @@fp.new_file(BRANCHES + @@fp.read(CURRENT_BRANCH), commitName)
+
+        return commitName
     end
 end 
 
 def main()
-    #fp = FS.new
-    #fp.new_folder ".\\daryl"
-    #puts DataStructure.getHEAD("Commit: 123454324342") 
-
-    #puts(DataStructure.add "daryl.txt")
-    #DataStructure.getHEAD()
-
-    DataStructure.commit($*[0] || "Pleib diddn leave no message")
-    #p DataStructure.getUser()
+    #None for now
 end      
 
 if __FILE__ == $0

@@ -61,9 +61,8 @@ class Dvcs  < Thor
     end
   
     desc "commit UPDATE_COMMENT","Commit changes"
-    def commit(update_comment)
-      puts "this is commit function the comment is #{update_comment}"
-      puts DataStructure.commit update_comment
+    def commit(update_comment)      
+      puts "Commit successful - #{DataStructure.commit update_comment}"
     end
   
     desc "log [<options>] [<revision range>] [[--] <path>…]","View the changelog"

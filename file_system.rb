@@ -1,11 +1,5 @@
 module FileSystem
 
-  #init folder:
-  #
-  #creates a folder containing:
-  #config file
-  #
-
   def new_folder(folder_name)
     Dir.mkdir(folder_name)
   end
@@ -24,12 +18,7 @@ module FileSystem
 
   #check whether or not folder 'query' exists in the current directory
   def check_folder_contents(query)
-    if (system("[ -d #{query} ]"))
-      puts("Error in current directory: #{query} already exists.")
-      false
-    else
-      true
-    end
+    return !(Dir.exist? query)
   end
 
   def check_file_exists(query)

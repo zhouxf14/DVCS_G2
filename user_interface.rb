@@ -37,7 +37,7 @@ class Dvcs  < Thor
   
     desc "status","Check the current status of the current repository"
     def status
-      puts "this is status function"
+      puts DataStructure.status
     end
   
     desc "heads","Show the current heads"

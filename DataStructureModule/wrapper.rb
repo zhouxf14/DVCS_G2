@@ -132,6 +132,31 @@ module DataStructure
         end        
     end
 
+    def DataStructure.status
+        result = Hash.new; previousArchives = Hash.new; lineno = 0; head = getHEAD()
+        
+        @@fp.read_lines(COMMITS + head){ |line| 
+            lineno += 1; 
+            previousArchives.store(*line.split) if lineno > 4
+        } unless head == "null"
+
+        @@fp.read_lines(INDEX) { |line|
+            if (@@fp.check_file_exists line)
+                archiveName = hash(line + @@fp.read(line))
+                if(previousArchives[line] == archiveName)
+                    result[line] = "Committed"
+                elsif(previousArchives[line] == nil)
+                    result[line] = "Not Committed"
+                else
+                    result[line] = "Uncommitted Changes"
+                end
+            else
+                result[line] = "Deleted"
+            end
+        }
+        return result
+    end
+
 end 
 
 def main()

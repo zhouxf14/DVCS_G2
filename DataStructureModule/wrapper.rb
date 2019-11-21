@@ -45,8 +45,9 @@ module DataStructure
         return "This file is already being tracked" if(added)
         
         #Now we do the hard work of adding the file
-        fp.append_text("#{file_path}\n",INDEX)
-        return "Uh, it worked I suppose"
+        return "Uh, it worked I suppose" if fp.append_text("#{file_path}\n",INDEX)
+        
+        return "Ah it actually failed for an unspecified file processing error"
     end
 end 
 
@@ -58,4 +59,6 @@ def main()
     puts(DataStructure.add "daryl.txt")
 end      
 
-main()
+if __FILE__ == $0
+    main()
+end

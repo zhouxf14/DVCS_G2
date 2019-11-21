@@ -1,3 +1,4 @@
+require "zlib"
 module FileSystem
 
   def new_folder(folder_name)
@@ -71,6 +72,29 @@ module FileSystem
 
   def list_contents(folder)
     Dir.children(folder)
+  end
+  
+  def remove_file(path)
+    if(File.exist?(path))
+      if(File.delete(path))
+        True
+      else
+        False
+      end
+    else
+      False
+    end
+  end
+  
+  def remove_folder(path)
+    if(check_folder_contents(path))
+      if(Dir.delete(path))
+        True
+      else
+        False
+      end
+    else
+      False
   end
 
 end

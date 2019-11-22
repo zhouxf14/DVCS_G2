@@ -114,5 +114,23 @@ module FileSystem
     end
     File.rename('_.txt', file_path)
   end
+    
+  #changes a line containing 'text' to contain 'new_text' instead. Note that the entire line containing 'text' is
+  #changed to contain exactly 'new_text', so this function cannot be used as a find and replace in the purest sense.
+  #Also, like remove_line, this function also uses _.txt, which, again is changeable if need be.
+  def edit_line(file_path, text, new_text)
+    out = File.new('_.txt','w+')
+    File.open(file_path, 'r+') do |file|
+      file.each_line do |line|
+        if line.include? text
+          out.write new_text
+          out.write "\n"
+        else
+          out.write line
+        end
+      end
+    end
+    File.rename('_.txt', file_path)
+  end
 
 end

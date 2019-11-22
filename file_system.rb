@@ -1,4 +1,4 @@
-require "zlib"
+
 module FileSystem
 
   def new_folder(folder_name)
@@ -95,6 +95,24 @@ module FileSystem
       end
     else
       False
+  end
+    
+  #removes a line specified by its text, or any substring of that text (careful!)
+  #note that this temporarily creates a file named _.txt, which I figure is one of the least
+  #likely possible names for a file, however feel free to change that if you so desire. This is untested
+  #on files other than files that started out as .txt, but I don't see why it shouldn't work.
+  def remove_line(file_path, text)
+    out = File.new('_.txt','w+')
+    File.open(file_path, 'r+') do |file|
+      file.each_line do |line|
+        if line.include? text
+          #do nothing
+        else
+          out.write line
+        end
+      end
+    end
+    File.rename('_.txt', file_path)
   end
 
 end

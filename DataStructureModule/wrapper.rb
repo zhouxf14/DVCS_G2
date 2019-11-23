@@ -62,6 +62,18 @@ module DataStructure
         
         return "Ah it actually failed for an unspecified file processing error"
     end
+    
+    def DataStructure.remove(file_path)
+        #First see if it has alread been added
+        added = false
+        @@fp.read_lines(INDEX) {|line| added = added || File.realdirpath(line) == File.realdirpath(file_path)}
+        if (added)
+            @@fp.remove_line(INDEX,file_path)
+        else
+            return "This file has not been tracked"
+        end
+    
+    end
 
     def DataStructure.commit(message)
         #We can do the first bit of the file text right off the bat

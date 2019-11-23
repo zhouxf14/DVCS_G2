@@ -106,7 +106,7 @@ module FileSystem
     out = File.new('_.txt','w+')
     File.open(file_path, 'r+') do |file|
       file.each_line do |line|
-        if line.include? text
+        if line.chomp.eql? text
           #do nothing
         else
           out.write line

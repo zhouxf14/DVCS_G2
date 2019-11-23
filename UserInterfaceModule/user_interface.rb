@@ -1,5 +1,6 @@
 require_relative 'UserInterfaceModule/init'
 require_relative 'UserInterfaceModule/add'
+require_relative 'DataStructureModule/remove'
 require_relative 'UserInterfaceModule/clone'
 require_relative 'UserInterfaceModule/status'
 require_relative 'UserInterfaceModule/heads'
@@ -37,8 +38,8 @@ class Dvcs  < Thor
     end
   
     desc "remove PATH","Remove specific files from the tracking list"
-    def remove(path)
-      puts "this is remove function the path is #{path}"
+    def remove(file_name)
+      Remove.remove_file(file_name,Dir.pwd)
     end
   
     desc "status","Check the current status of the current repository"
@@ -53,6 +54,7 @@ class Dvcs  < Thor
   
     desc "diff TARGET_VERSION","Check the changes between revisions"
     def diff(target_version)
+
       puts "this is diff function the target_vesrsion is #{target_version}"
     end
   

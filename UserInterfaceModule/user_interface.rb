@@ -27,13 +27,13 @@ class Dvcs  < Thor
     def add(file_name)
       #TODO - check that the path is valid and that the file exists
       #puts "this is add function file name is #{file_name}"
-      Add.add_file(file_name,Dir.pwd)
+      Add.add_file(file_name, Dir.pwd)
     end
     
     desc "clone PATH_URL","copy an existing repository"
     def clone(path_url)
       # puts "this is clone function the path or url is #{path_url}"
-      Clone.create_repository(Dir.pwd)
+      Clone.create_repository(Dir.pwd, path_url)
     end
   
     desc "remove PATH","Remove specific files from the tracking list"

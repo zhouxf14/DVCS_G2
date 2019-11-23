@@ -1,6 +1,7 @@
 require_relative 'UserInterfaceModule/init'
 require_relative 'UserInterfaceModule/add'
 require_relative 'UserInterfaceModule/clone'
+require_relative 'UserInterfaceModule/status'
 require_relative 'DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'
@@ -41,7 +42,7 @@ class Dvcs  < Thor
   
     desc "status","Check the current status of the current repository"
     def status
-      puts DataStructure.status
+      Status.check
     end
   
     desc "heads","Show the current heads"

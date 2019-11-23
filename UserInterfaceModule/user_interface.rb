@@ -1,12 +1,11 @@
-require_relative 'UserInterfaceModule/init'
-require_relative 'UserInterfaceModule/add'
-require_relative 'DataStructureModule/remove'
-require_relative 'UserInterfaceModule/clone'
-require_relative 'UserInterfaceModule/status'
-require_relative 'UserInterfaceModule/heads'
-require_relative 'UserInterfaceModule/cat'
-require_relative 'UserInterfaceModule/log'
-require_relative 'DataStructureModule/wrapper'
+require_relative 'init'
+require_relative 'add'
+require_relative 'remove'
+require_relative 'clone'
+require_relative 'status'
+require_relative 'heads'
+require_relative 'commit'
+require_relative '../DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'
 class Dvcs  < Thor
@@ -61,9 +60,8 @@ class Dvcs  < Thor
     end
   
     desc "cat PATH","Inspect a file of a given revision"
-    def cat(path_filename, version_id=:options)
-      Cat.inspect(path_filename)
-      # puts "this is cat funciton,the path is #{path_filename}"
+    def cat(path_filename)
+      puts "this is cat funciton,the path is #{path_filename}"
     end
   
     desc "checkout BRANCH_NAME","Check out a specific revision"
@@ -73,12 +71,12 @@ class Dvcs  < Thor
   
     desc "commit UPDATE_COMMENT","Commit changes"
     def commit(update_comment)      
-      puts "Commit successful - #{DataStructure.commit update_comment}"
+      Commit.commit_stage(update_comment)
     end
   
     desc "log [<options>] [<revision range>] [[--] <path>…]","View the changelog"
     def log(options=:nah,range=:options,path=:suck) #And these aren't even optional options!
-      Log.output
+      puts DataStructure.log
     end
   
     desc "merge BRANCH_1, BRANCH_2","Merge two revisions"

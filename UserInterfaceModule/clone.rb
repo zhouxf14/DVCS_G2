@@ -1,4 +1,5 @@
-require File.expand_path('../file_system', __FILE__)
+require_relative '../FileProcessorModule/file_system'
+
 module Clone
     extend FileSystem
     extend Init

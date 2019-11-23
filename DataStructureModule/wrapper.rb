@@ -1,4 +1,4 @@
-require_relative '../file_system'
+require_relative '../FileProcessorModule/file_system'
 
 require 'open3'
 require 'digest'
@@ -68,7 +68,9 @@ module DataStructure
         added = false
         @@fp.read_lines(INDEX) {|line| added = added || File.realdirpath(line) == File.realdirpath(file_path)}
         if (added)
-            @@fp.remove_line(INDEX,file_path)
+            if (@@fp.remove_line(INDEX,file_path))
+                return "Remove file succeed"
+            end
         else
             return "This file has not been tracked"
         end

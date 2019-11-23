@@ -1,5 +1,5 @@
-require_relative 'DataStructureModule/wrapper'
-require File.expand_path('../file_system', __FILE__)
+require_relative '../DataStructureModule/wrapper'
+require_relative '../FileProcessorModule/file_system'
 module Remove
   extend FileSystem
   def Remove.remove_file(file_name,path)

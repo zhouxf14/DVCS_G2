@@ -104,16 +104,19 @@ module FileSystem
   #on files other than files that started out as .txt, but I don't see why it shouldn't work.
   def remove_line(file_path, text)
     out = File.new('_.txt','w+')
+    i = 0
     File.open(file_path, 'r+') do |file|
       file.each_line do |line|
         if line.chomp.eql? text
           #do nothing
+          i += 1
         else
           out.write line
         end
       end
     end
     File.rename('_.txt', file_path)
+    return i > 0
   end
     
   #changes a line containing 'text' to contain 'new_text' instead. Note that the entire line containing 'text' is

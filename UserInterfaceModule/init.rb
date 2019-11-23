@@ -1,4 +1,4 @@
-require_relative 'FileSystemModule/file_system'
+require_relative '../FileProcessorModule/file_system'
 
 module Init
     extend FileSystem

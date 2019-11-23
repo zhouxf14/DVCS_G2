@@ -1,5 +1,5 @@
-require_relative 'DataStructureModule/wrapper'
-require_relative 'FileSystemModule/file_system'
+require_relative '../DataStructureModule/wrapper'
+require_relative '../FileProcessorModule/file_system'
 module Status
   def Status.check()
     puts DataStructure.status

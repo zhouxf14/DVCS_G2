@@ -1,9 +1,11 @@
 require File.expand_path('../init', __FILE__)
+require File.expand_path('../add', __FILE__)
 require_relative 'DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'
 class Dvcs  < Thor
     include Init
+    include Add
     desc "init","Create an empty repository"
     def init
         #creat a .dvcs folder in the local path
@@ -22,15 +24,12 @@ class Dvcs  < Thor
     def add(file_name)
       #TODO - check that the path is valid and that the file exists
       #puts "this is add function file name is #{file_name}"
-      puts DataStructure.add file_name
+      Add.add_file(file_name,Dir.pwd)
     end
     
     desc "clone PATH_URL","copy an existing repository"
     def clone(path_url)
-      FileSystem.get_remote_repository()
-      Init.create_repository(Dir.pwd)
-      DataStructure.commit("Baby's first commit")
-      # puts "this is clone function the path or url is #{path_url}"
+      puts "this is clone function the path or url is #{path_url}"
     end
   
     desc "remove PATH","Remove specific files from the tracking list"

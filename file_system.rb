@@ -95,6 +95,7 @@ module FileSystem
       end
     else
       False
+    end# lost a end
   end
     
   #removes a line specified by its text, or any substring of that text (careful!)

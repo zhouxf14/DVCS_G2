@@ -1,5 +1,6 @@
-require File.expand_path('../init', __FILE__)
-require File.expand_path('../add', __FILE__)
+require_relative 'UserInterfaceModule/init'
+require_relative 'UserInterfaceModule/add'
+require_relative 'UserInterfaceModule/clone'
 require_relative 'DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'

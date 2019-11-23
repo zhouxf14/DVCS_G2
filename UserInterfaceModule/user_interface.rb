@@ -4,6 +4,7 @@ require_relative 'DataStructureModule/remove'
 require_relative 'UserInterfaceModule/clone'
 require_relative 'UserInterfaceModule/status'
 require_relative 'UserInterfaceModule/heads'
+require_relative 'UserInterfaceModule/log'
 require_relative 'DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'
@@ -75,7 +76,7 @@ class Dvcs  < Thor
   
     desc "log [<options>] [<revision range>] [[--] <path>…]","View the changelog"
     def log(options=:nah,range=:options,path=:suck) #And these aren't even optional options!
-      puts DataStructure.log
+      Log.output
     end
   
     desc "merge BRANCH_1, BRANCH_2","Merge two revisions"

@@ -29,6 +29,7 @@ class Dvcs  < Thor
     
     desc "clone PATH_URL","copy an existing repository"
     def clone(path_url)
+      # puts "this is clone function the path or url is #{path_url}"
       Clone.create_repository(Dir.pwd)
     end
   

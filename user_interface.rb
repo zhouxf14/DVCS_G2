@@ -21,13 +21,16 @@ class Dvcs  < Thor
     desc "add FILE_NAME","Add specific files that you want to track"
     def add(file_name)
       #TODO - check that the path is valid and that the file exists
-      #puts "this is add function file name is #{file_name}"      
+      #puts "this is add function file name is #{file_name}"
       puts DataStructure.add file_name
     end
     
     desc "clone PATH_URL","copy an existing repository"
     def clone(path_url)
-      puts "this is clone function the path or url is #{path_url}"
+      FileSystem.get_remote_repository()
+      Init.create_repository(Dir.pwd)
+      DataStructure.commit("Baby's first commit")
+      # puts "this is clone function the path or url is #{path_url}"
     end
   
     desc "remove PATH","Remove specific files from the tracking list"

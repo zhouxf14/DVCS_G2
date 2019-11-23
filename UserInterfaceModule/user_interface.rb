@@ -4,6 +4,7 @@ require_relative 'DataStructureModule/remove'
 require_relative 'UserInterfaceModule/clone'
 require_relative 'UserInterfaceModule/status'
 require_relative 'UserInterfaceModule/heads'
+require_relative 'UserInterfaceModule/cat'
 require_relative 'UserInterfaceModule/log'
 require_relative 'DataStructureModule/wrapper'
 require 'rubygems'
@@ -60,8 +61,9 @@ class Dvcs  < Thor
     end
   
     desc "cat PATH","Inspect a file of a given revision"
-    def cat(path_filename)
-      puts "this is cat funciton,the path is #{path_filename}"
+    def cat(path_filename, version_id=:options)
+      Cat.inspect(path_filename)
+      # puts "this is cat funciton,the path is #{path_filename}"
     end
   
     desc "checkout BRANCH_NAME","Check out a specific revision"

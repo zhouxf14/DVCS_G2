@@ -5,6 +5,7 @@ require_relative 'clone'
 require_relative 'status'
 require_relative 'heads'
 require_relative 'commit'
+require_relative 'cat'
 require_relative '../DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'
@@ -60,8 +61,9 @@ class Dvcs  < Thor
     end
   
     desc "cat PATH","Inspect a file of a given revision"
-    def cat(path_filename)
-      puts "this is cat funciton,the path is #{path_filename}"
+    def cat(path_filename, version_id=:options)
+      Cat.inspect(path_filename)
+      # puts "this is cat funciton,the path is #{path_filename}"
     end
   
     desc "checkout BRANCH_NAME","Check out a specific revision"

@@ -2,6 +2,7 @@ require_relative 'UserInterfaceModule/init'
 require_relative 'UserInterfaceModule/add'
 require_relative 'UserInterfaceModule/clone'
 require_relative 'UserInterfaceModule/status'
+require_relative 'UserInterfaceModule/heads'
 require_relative 'DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'
@@ -47,7 +48,7 @@ class Dvcs  < Thor
   
     desc "heads","Show the current heads"
     def heads
-      puts DataStructure.HEADs
+      Heads.return_back
     end
   
     desc "diff TARGET_VERSION","Check the changes between revisions"

@@ -1,4 +1,5 @@
-require File.expand_path('../file_system', __FILE__)
+require_relative 'FileSystemModule/file_system'
+
 module Init
     extend FileSystem
     def Init.create_repository(local_path)

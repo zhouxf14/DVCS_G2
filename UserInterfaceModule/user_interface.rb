@@ -32,8 +32,8 @@ class Dvcs  < Thor
     end
     
     desc "clone PATH_URL","copy an existing repository"
-    def clone(path_url)
-      Clone.create_repository(Dir.pwd, path_url)
+    def clone(path_url, local_name)
+      Clone.create_repository(Dir.pwd, path_url, local_path)
     end
   
     desc "remove PATH","Remove specific files from the tracking list"

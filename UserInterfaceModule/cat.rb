@@ -1,4 +1,4 @@
-require_relative 'DataStructureModule/wrapper'
+require_relative '../DataStructureModule/wrapper'
 
 module Cat
   def Cat.inspect(file_path)

@@ -144,11 +144,11 @@ module FileSystem
       open("#{url}") do |url|
         File.open("#{local_name}", "wb") do |file|
           file.write(url.read)
-          TRUE
+          True
         end
       end
     rescue
-      FALSE
+      False
     end
   end
 

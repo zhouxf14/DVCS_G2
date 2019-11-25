@@ -4,7 +4,7 @@ module Init
     extend FileSystem
     def Init.create_repository(local_path)
         if (build_repo_structure(local_path))
-            puts "Init repository success"
+            puts "Repository created successfully"
         end
     end
     def Init.build_repo_structure(local_path)

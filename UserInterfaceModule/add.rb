@@ -7,7 +7,7 @@ module Add
     if (Add.check_file_exists(path+'/'+file_name))
       puts DataStructure.add(file_name)
     else
-      puts "Error the file not exist"
+      puts "Error adding file. Does the file exist?"
     end
   end
 

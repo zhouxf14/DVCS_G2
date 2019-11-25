@@ -58,9 +58,9 @@ module DataStructure
         return "This file is already being tracked" if(added)
         
         #Now we do the hard work of adding the file
-        return "Uh, it worked I suppose" if @@fp.append_text(INDEX, "#{file_path}\n")
+        return "Path added to tracking" if @@fp.append_text(INDEX, "#{file_path}\n")
         
-        return "Ah it actually failed for an unspecified file processing error"
+        return "Failure adding path - unspecified file processing error"
     end
     
     def DataStructure.remove(file_path)
@@ -69,10 +69,10 @@ module DataStructure
         @@fp.read_lines(INDEX) {|line| added = added || File.realdirpath(line) == File.realdirpath(file_path)}
         if (added)
             if (@@fp.remove_line(INDEX,file_path))
-                return "Remove file succeed"
+                return "Removed file successfully"
             end
         else
-            return "This file has not been tracked"
+            return "This file was never tracked; nothing to remove"
         end
     
     end
@@ -98,7 +98,7 @@ module DataStructure
                 fileText += line + " " + archiveName + "\n"
             else
                 #TODO - If file doesn't exist we can presumably remove it from the index
-                puts "Oh wow, #{line} was deleted by the user and so will be ignored by commit"
+                puts "File #{line} does not exist."
             end
         }
 

@@ -7,7 +7,7 @@ module Commit
     if (update_comment.length > 0 and update_comment.length < 20)
         DataStructure.commit update_comment
     else
-      puts "Update comments can not be emputy or more than 20 characters"
+      puts "Update comments can not be empty or more than 20 characters"
     end
   end
 

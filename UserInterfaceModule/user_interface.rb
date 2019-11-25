@@ -23,19 +23,16 @@ class Dvcs  < Thor
         #objects: to store all the data, include two sub folders one for the stage and another one for repository
         #ref: to store the points which point to the branch committed data object
         Init.create_repository(Dir.pwd)
-        DataStructure.commit("Baby's first commit")
+        DataStructure.commit("Baby's first commit") # TODO: do we need to do this?
     end
   
     desc "add FILE_NAME","Add specific files that you want to track"
     def add(file_name)
-      #TODO - check that the path is valid and that the file exists
-      #puts "this is add function file name is #{file_name}"
       Add.add_file(file_name, Dir.pwd)
     end
     
     desc "clone PATH_URL","copy an existing repository"
     def clone(path_url)
-      # puts "this is clone function the path or url is #{path_url}"
       Clone.create_repository(Dir.pwd, path_url)
     end
   
@@ -63,7 +60,6 @@ class Dvcs  < Thor
     desc "cat PATH","Inspect a file of a given revision"
     def cat(path_filename, version_id=:options)
       Cat.inspect(path_filename)
-      # puts "this is cat funciton,the path is #{path_filename}"
     end
   
     desc "checkout BRANCH_NAME","Check out a specific revision"

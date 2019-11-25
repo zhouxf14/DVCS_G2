@@ -136,5 +136,20 @@ module FileSystem
     end
     File.rename('_.txt', file_path)
   end
+  
+  #downloads a remote file at 'url' and places it at 'local name'. Returns true if success, i.e. url is valid and the file
+  #could be opened. Else returns false. It should work on folders too, if it doesn't, let me know and I'll go fix it.
+  def download_remote(url,local_name)
+    begin
+      open("#{url}") do |url|
+        File.open("#{local_name}", "wb") do |file|
+          file.write(url.read)
+          TRUE
+        end
+      end
+    rescue
+      FALSE
+    end
+  end
 
 end

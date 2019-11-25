@@ -6,6 +6,7 @@ require_relative 'status'
 require_relative 'heads'
 require_relative 'commit'
 require_relative 'cat'
+require_relative 'diff'
 require_relative '../DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'
@@ -52,9 +53,8 @@ class Dvcs  < Thor
     end
   
     desc "diff TARGET_VERSION","Check the changes between revisions"
-    def diff(target_version)
-
-      puts "this is diff function the target_vesrsion is #{target_version}"
+    def diff(version1, version2)
+      Diff.diff_version(version1,version2)
     end
   
     desc "cat PATH","Inspect a file of a given revision"

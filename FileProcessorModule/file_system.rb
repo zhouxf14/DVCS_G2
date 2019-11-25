@@ -152,4 +152,13 @@ module FileSystem
     end
   end
 
+  #This funciton is call system command provide by linux to compare the two different file.
+  def compare_files(file1,file2)
+    compare_result=`diff #{file1} #{file2} | cat -n` 
+    if compare_result.length > 0
+      puts compare_result
+    elsif compare_result.length == 0
+      return 
+    end
+  end
 end

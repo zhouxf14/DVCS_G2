@@ -171,6 +171,10 @@ module DataStructure
         return result
     end
 
+    def DataStructure.diff(version1, version2)
+        @@fp.compare_files(version1,version2)
+    end
+
 end 
 
 def main()

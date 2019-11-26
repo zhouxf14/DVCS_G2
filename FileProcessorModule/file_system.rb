@@ -176,3 +176,23 @@ module FileSystem
     return file_list
   end
 end
+
+def remove_dir(path)
+  if Dir.empty?(path)
+    puts "empty"
+    Dir.rmdir(path)
+  else
+    Dir.each_child(path) do |child|
+      if child == '.DS_Store'
+        puts "found ds store"
+      else
+        puts "nope"
+        if File.file?(child)
+          File.delete(child)
+        else
+          remove_dir(child)
+        end
+      end
+    end
+  end
+end

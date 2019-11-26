@@ -8,6 +8,8 @@ module Diff
     #step 2 : compare all the file and show the difference
     if version2==nil and version1=="HEAD"
       DataStructure.diff(DataStructure.getHEAD())
+    elsif version2==nil and version1!="HEAD"
+      DataStructure.diff(version1)
     else
       puts "error: version not exist"
     end

@@ -53,8 +53,8 @@ class Dvcs  < Thor
     end
   
     desc "diff TARGET_VERSION","Check the changes between revisions"
-    def diff(version1, version2)
-      Diff.diff_version(version1,version2)
+    def diff(version1, version2=nil)
+      Diff.diff_version(version1,version2=nil)
     end
   
     desc "cat PATH","Inspect a file of a given revision"

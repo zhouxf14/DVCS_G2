@@ -152,13 +152,20 @@ module FileSystem
     end
   end
 
-  #This funciton is call system command provide by linux to compare the two different file.
+  #This funciton is call system command provided by linux to compare the two different file.
   def compare_files(file1,file2)
     compare_result=`diff #{file1} #{file2} | cat -n` 
     if compare_result.length > 0
-      puts compare_result
+      return compare_result
     elsif compare_result.length == 0
-      return 
+      return nil
     end
+  end
+
+  #This function is call system command provided by linux to acquire all files(include the files in subfolder) in current file.
+  def get_all_files_name()
+  # file_list=` find "$(pwd)" -type f -not -path "$(pwd)/.dvcs/*" ` # absolute path version
+    file_list=` find  -type f -not -path "./.dvcs/*" `
+    return file_list
   end
 end

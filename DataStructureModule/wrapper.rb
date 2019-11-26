@@ -171,8 +171,39 @@ module DataStructure
         return result
     end
 
-    def DataStructure.diff(version1, version2)
-        @@fp.compare_files(version1,version2)
+    def DataStructure.diff(version1, version2=nil)
+        if version2==nil
+            file_list=[]
+            files=@@fp.get_all_files_name().split(/\n/) # get all workspace files
+            previousArchives = Hash.new; lineno = 0; head = version1
+            
+            @@fp.read_lines(COMMITS + head){ |line|     # get all version2 files in repository
+                lineno += 1; 
+                previousArchives.store(*line.split) if lineno > 4
+                } unless head == "null"
+                files.each{ |line|                          #compare those files
+                    len=line.length
+                    filename=line[2,len]
+                    if previousArchives.key?(filename)
+                        puts "--------------------------------------------------------------"
+                        puts "< : workspace "+filename
+                        puts "> : repository"+filename+"->"+previousArchives[filename]
+                        diff_result=@@fp.compare_files(line,ARCHIVES+previousArchives[filename])
+                        if diff_result.nil?
+                            puts "The are same"
+                        else
+                            puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                            puts diff_result
+                            puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                        end                     
+                    else
+                        puts filename+" is a new file, has not been committed"                       
+                    end
+                    puts "--------------------------------------------------------------"
+                }
+        else 
+            return 
+        end
     end
 
 end 

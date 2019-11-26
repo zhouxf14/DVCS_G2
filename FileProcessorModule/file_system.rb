@@ -53,19 +53,26 @@ module FileSystem
     return -1
   end
 
+  ######################################################################################
+  # Having the 4 functions below will make more sense when we get compression in place #
+  ######################################################################################
+
+  # Makes an "archived" copy at the specified location
   def store(old_path, new_path)
-    #File.open(new_path, "w") { |file|
-    #  read_lines(old_path){|line|
-    #    file.puts line
-    #  }
-    #}
     IO.copy_stream(old_path, new_path)
   end
 
+  # Takes an "archived" file and "unarchives" it at the specified location
+  def restore(old_path, new_path)
+    IO.copy_stream(old_path, new_path)
+  end
+
+  # Takes an "archived" file and "unarchives" it, returning the contents
   def retrieve(path)
     return File.read(path, 1073741824) || "" #Only reads a Gigabyte
   end
 
+  # Returns the contents of a file that hasn't been archived
   def read(path)
     return File.read(path, 1073741824) || "" #Only reads a Gigabyte
   end

@@ -176,11 +176,11 @@ module DataStructure
             file_list=[]
             files=@@fp.get_all_files_name().split(/\n/) # get all workspace files
             previousArchives = Hash.new; lineno = 0; head = version1
-            
             @@fp.read_lines(COMMITS + head){ |line|     # get all version2 files in repository
                 lineno += 1; 
                 previousArchives.store(*line.split) if lineno > 4
                 } unless head == "null"
+                
                 files.each{ |line|                          #compare those files
                     len=line.length
                     filename=line[2,len]
@@ -188,6 +188,7 @@ module DataStructure
                         puts "--------------------------------------------------------------"
                         puts "< : workspace "+filename
                         puts "> : repository"+filename+"->"+previousArchives[filename]
+                        # Compare the files between two version
                         diff_result=@@fp.compare_files(line,ARCHIVES+previousArchives[filename])
                         if diff_result.nil?
                             puts "The are same"
@@ -204,6 +205,18 @@ module DataStructure
         else 
             return 
         end
+    end
+
+    def DataStructure.repository_file_list(version)
+        result = Hash.new; previousArchives = Hash.new; lineno = 0; head = version
+
+        @@fp.read_lines(COMMITS + head){ |line|     # get all version2 files in repository
+            lineno += 1; 
+            previousArchives.store(*line.split) if lineno > 4
+            } unless head == "null"
+        
+        return previousArchives
+    
     end
 
 end 

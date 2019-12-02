@@ -7,6 +7,7 @@ require_relative 'heads'
 require_relative 'commit'
 require_relative 'cat'
 require_relative 'diff'
+require_relative 'merge'
 require_relative '../DataStructureModule/wrapper'
 require 'rubygems'
 require 'thor'
@@ -79,7 +80,8 @@ class Dvcs  < Thor
   
     desc "merge BRANCH_1, BRANCH_2","Merge two revisions"
     def merge(branch_1,branch_2)
-      puts "this is merge function the branch1 is #{branch_1} the branch2 is #{branch_2}"
+        puts Merge.merge_return_back(branch_1, branch_2)
+      # puts "this is merge function the branch1 is #{branch_1} the branch2 is #{branch_2}"
     end
   
     desc "pull REMOTE_LOCATION","Pull the changes from another repository"

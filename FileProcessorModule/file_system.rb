@@ -84,25 +84,25 @@ module FileSystem
   def remove_file(path)
     if(File.exist?(path))
       if(File.delete(path))
-        True
+        true
       else
-        False
+        false
       end
     else
-      False
+      false
     end
   end
   
   def remove_folder(path)
     if(Dir.exist? (path))
       if(Dir.delete(path))
-        True
+        true
       else
-        False
+        false
       end
     else
-      False
-    end# lost a end
+      false
+    end
   end
     
   #removes a line specified by its text, or any substring of that text (careful!)

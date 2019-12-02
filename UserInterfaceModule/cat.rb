@@ -1,7 +1,11 @@
 require_relative '../DataStructureModule/wrapper'
 
 module Cat
-  def Cat.inspect(file_path)
-    puts DataStructure.search_commit(file_path) # DS.search_commit can search the file name in the commit file which is pointed by the version and output the list of data including version history, author(s)
+  def Cat.inspect(filename, version_id=:options)
+  	if (version_id) {
+  		puts DataStructure.search_commit(filename, HEAD)
+  	} else {
+  		puts DataStructure.search_commit(filename, version_id)
+  	}
   end
 end

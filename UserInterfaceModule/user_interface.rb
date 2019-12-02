@@ -59,8 +59,8 @@ class Dvcs  < Thor
     end
   
     desc "cat PATH","Inspect a file of a given revision"
-    def cat(path_filename, version_id=:options)
-      Cat.inspect(path_filename)
+    def cat(filename, version_id=:options)
+      Cat.inspect(filename, version_id=:options)
     end
   
     desc "checkout BRANCH_NAME","Check out a specific revision"

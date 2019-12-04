@@ -176,7 +176,7 @@ module DataStructure
             file_list=[]
             files=@@fp.get_all_files_name().split(/\n/) # get all workspace files
             previousArchives = Hash.new; lineno = 0; head = version1
-            @@fp.read_lines(COMMITS + head){ |line|     # get all version2 files in repository
+            @@fp.read_lines(COMMITS + head){ |line|     # get all version1 files in repository
                 lineno += 1; 
                 previousArchives.store(*line.split) if lineno > 4
                 } unless head == "null"
@@ -203,6 +203,36 @@ module DataStructure
                     puts "--------------------------------------------------------------"
                 }
         else 
+            previousArchives1 = Hash.new; lineno1 = 0; head1 = version1
+            @@fp.read_lines(COMMITS + head1){ |line|     # get all version2 files in repository
+                lineno1 += 1; 
+                previousArchives1.store(*line.split) if lineno1 > 4
+                } unless head1 == "null"
+
+            previousArchives2 = Hash.new; lineno2 = 0; head2 = version2
+            @@fp.read_lines(COMMITS + head2){ |line|     # get all version2 files in repository
+                    lineno2 += 1; 
+                    previousArchives2.store(*line.split) if lineno2 > 4
+            } unless head1 == "null"
+                
+            previousArchives1.each{ |line|
+                if previousArchives2.key?(line[0])
+                    puts "--------------------------------------------------------------"
+                    puts "< : version1: "+version1+" filename:"+line[0]
+                    puts "> : version2 "+version2+" filename:"+line[0]
+                    diff_result=@@fp.compare_files(ARCHIVES+previousArchives1[line[0]],ARCHIVES+previousArchives2[line[0]])
+                    if diff_result.nil?
+                        puts "The are same"
+                    else
+                        puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                        puts diff_result
+                        puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                    end
+                else
+                    puts line[0]+" is a new file, has not been committed"                     
+                end
+
+            }
             return 
         end
     end

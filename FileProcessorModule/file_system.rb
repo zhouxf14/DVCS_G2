@@ -175,24 +175,47 @@ module FileSystem
     file_list=` find  -type f -not -path "./.dvcs/*" `
     return file_list
   end
-end
-
-def remove_dir(path)
-  if Dir.empty?(path)
-    puts "empty"
-    Dir.rmdir(path)
-  else
-    Dir.each_child(path) do |child|
-      if child == '.DS_Store'
-        puts "found ds store"
-      else
-        puts "nope"
-        if File.file?(child)
-          File.delete(child)
+  
+  #rm_folder removes all children of a folder, except anything named 'dvcs'. point it at the working directory!
+  def rm_folder(directory)
+    #if on mac
+    if Dir.children(directory).include?(".DS-Store")
+      Dir.children(directory).each do |child|
+        name = directory + "/" + child
+        if child == "dvcs"
+          #do nothing
         else
-          remove_dir(child)
+          #remove the folder or file
+          #if its a file
+          if File.file?(name)
+            File.delete(name)
+          #if its a folder
+          else
+            system("rm -rf #{child}")
+          end
+        end
+      end
+    #if not on mac
+    else
+      Dir.children(directory).each do |child|
+        name = directory + "/" + child
+        #check if its dvcs
+        if child == "dvcs"
+          #do nothing
+        else
+          #remove the folder or file
+          #if its a file
+          if File.file?(name)
+            File.delete(name)
+          #if its a folder
+          else
+            Dir.delete(name)
+          end
         end
       end
     end
   end
+  
+  
 end
+

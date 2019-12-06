@@ -59,7 +59,7 @@ class Dvcs  < Thor
     end
   
     desc "cat PATH","Inspect a file of a given revision"
-    def cat(filename, version_id=nil)
+    def cat(filename, version_id="HEAD")
       Cat.inspect(filename, version_id)
     end
   

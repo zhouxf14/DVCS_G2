@@ -170,7 +170,6 @@ module DataStructure
         }
         return result
     end
-
     def DataStructure.diff(version1, version2=nil)
         if version2==nil
             file_list=[]
@@ -247,6 +246,29 @@ module DataStructure
         
         return previousArchives
     
+    end
+    def DataStructure.search_commited(version)
+        if version == "HEAD"
+            return true
+        else
+            return @@fp.check_file_exists(COMMITS + version)
+        end
+    end
+    # search the file in specify version if it exist in the version return the path of the file
+    def DataStructure.search_commited_file(filename,version)
+        if version=="HEAD"
+            version=getHEAD()
+        end
+        result = Hash.new; previousArchives = Hash.new; lineno = 0; head = version
+        @@fp.read_lines(COMMITS + head){ |line| 
+            lineno += 1; 
+            previousArchives.store(*line.split) if lineno > 4
+        } unless head == "null"
+        if previousArchives.key?(filename)
+            return ARCHIVES+previousArchives[filename]
+        else
+            return nil
+        end
     end
 
 end 

@@ -228,9 +228,15 @@ module DataStructure
                         puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
                     end
                 else
-                    puts line[0]+" is a new file, has not been committed"                     
+                    puts line[0]+" is a file in " + version1 + " not in " + version2                    
                 end
 
+            }
+            previousArchives2.each{ |line|
+                if previousArchives1.key?(line[0])
+                else
+                    puts line[0]+" is a file in " + version2 + " not in " + version1                     
+                end
             }
             return 
         end

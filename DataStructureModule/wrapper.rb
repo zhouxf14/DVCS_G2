@@ -171,10 +171,11 @@ module DataStructure
         return result
     end
     def DataStructure.diff(version1, version2=nil)
+        diff_result_list=[]
         if version2==nil
-            file_list=[]
             files=@@fp.get_all_files_name().split(/\n/) # get all workspace files
             previousArchives = Hash.new; lineno = 0; head = version1
+
             @@fp.read_lines(COMMITS + head){ |line|     # get all version1 files in repository
                 lineno += 1; 
                 previousArchives.store(*line.split) if lineno > 4
@@ -183,25 +184,45 @@ module DataStructure
                 files.each{ |line|                          #compare those files
                     len=line.length
                     filename=line[2,len]
+                    compare_info={"new_file_indicate"=>nil,"version1"=>nil,"version2"=>nil,"file1"=>nil,"file2"=>nil,"file1_path"=>nil,"file2_path"=>nil,"diff_result"=>nil}
                     if previousArchives.key?(filename)
-                        puts "--------------------------------------------------------------"
-                        puts "< : workspace "+filename
-                        puts "> : repository"+filename+"->"+previousArchives[filename]
+                        compare_info["new_file_indicate"]=nil
+                        compare_info["version1"]="workspace"
+                        compare_info["version2"]=head
+                        compare_info["file1"]=filename
+                        compare_info["file2"]=filename
+                        compare_info["file1_path"]=line
+                        compare_info["file2_path"]=ARCHIVES+previousArchives[filename]
+                        #puts "--------------------------------------------------------------"
+                        #puts "< : workspace "+filename
+                        #puts "> : repository"+filename+"->"+previousArchives[filename]
                         # Compare the files between two version
                         diff_result=@@fp.compare_files(line,ARCHIVES+previousArchives[filename])
                         if diff_result.nil?
-                            puts "The are same"
+                            compare_info["diff_result"]="The are same"
+                            #puts "The are same"
                         else
-                            puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                            puts diff_result
-                            puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                        end                     
+                            compare_info["diff_result"]=diff_result
+                            #puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                            #puts diff_result
+                            #puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                        end
+                        diff_result_list.push(compare_info)                     
                     else
-                        puts filename+" is a new file, has not been committed"                       
+                        compare_info["new_file_indicate"]="version1"
+                        compare_info["version1"]="workspace"
+                        compare_info["file1"]=filename
+                        compare_info["file1_path"]=line
+                        #puts filename+" is a new file, has not been committed"
+                        diff_result_list.push(compare_info)                       
                     end
-                    puts "--------------------------------------------------------------"
+                    #puts "--------------------------------------------------------------"
+
                 }
-        else 
+            return diff_result_list
+        else
+            diff_result_list=[]
+ 
             previousArchives1 = Hash.new; lineno1 = 0; head1 = version1
             @@fp.read_lines(COMMITS + head1){ |line|     # get all version2 files in repository
                 lineno1 += 1; 
@@ -215,30 +236,52 @@ module DataStructure
             } unless head1 == "null"
                 
             previousArchives1.each{ |line|
+                compare_info={"new_file_indicate"=>nil,"version1"=>nil,"version2"=>nil,"file1"=>nil,"file2"=>nil,"file1_path"=>nil,"file2_path"=>nil,"diff_result"=>nil}
                 if previousArchives2.key?(line[0])
-                    puts "--------------------------------------------------------------"
-                    puts "< : version1: "+version1+" filename:"+line[0]
-                    puts "> : version2 "+version2+" filename:"+line[0]
+                    compare_info["new_file_indicate"]=nil
+                    compare_info["version1"]=version1
+                    compare_info["version2"]=version2
+                    compare_info["file1"]=line[0]
+                    compare_info["file2"]=line[0]
+                    compare_info["file1_path"]=ARCHIVES+previousArchives1[line[0]]
+                    compare_info["file2_path"]=ARCHIVES+previousArchives2[line[0]]
+                    #puts "--------------------------------------------------------------"
+                    #puts "< : version1: "+version1+" filename:"+line[0]
+                    #puts "> : version2 "+version2+" filename:"+line[0]
                     diff_result=@@fp.compare_files(ARCHIVES+previousArchives1[line[0]],ARCHIVES+previousArchives2[line[0]])
                     if diff_result.nil?
-                        puts "The are same"
+                        compare_info["diff_result"]="The are same"
+                        #puts "The are same"
+                        diff_result_list.push(compare_info)
                     else
-                        puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                        puts diff_result
-                        puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                        compare_info["diff_result"]=diff_result
+                        #puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                        #puts diff_result
+                        #puts "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                        diff_result_list.push(compare_info)
                     end
                 else
-                    puts line[0]+" is a file in " + version1 + " not in " + version2                    
+                    compare_info["new_file_indicate"]="version1"
+                    compare_info["version1"]=version1
+                    compare_info["file1"]=line[0]
+                    compare_info["file1_path"]=ARCHIVES+previousArchives1[line[0]]
+                    #puts line[0]+" is a file in " + version1 + " not in " + version2
+                    diff_result_list.push(compare_info)                    
                 end
-
             }
             previousArchives2.each{ |line|
+                compare_info={"new_file_indicate"=>nil,"version1"=>nil,"version2"=>nil,"file1"=>nil,"file2"=>nil,"file1_path"=>nil,"file2_path"=>nil,"diff_result"=>nil}
                 if previousArchives1.key?(line[0])
                 else
-                    puts line[0]+" is a file in " + version2 + " not in " + version1                     
+                    compare_info["new_file_indicate"]="version2"
+                    compare_info["version2"]=version2
+                    compare_info["file1"]=line[0]
+                    compare_info["file1_path"]=ARCHIVES+previousArchives2[line[0]]
+                    #puts line[0]+" is a file in " + version2 + " not in " + version1
+                    diff_result_list.push(compare_info)                     
                 end
             }
-            return 
+            return diff_result_list
         end
     end
 

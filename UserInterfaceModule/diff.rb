@@ -67,8 +67,6 @@ module Diff
     elsif version2 !=nil and version1.casecmp("HEAD")==-1
       diff_result=DataStructure.diff(version1,version2)
       diff_result.each{|item| 
-        #['hi'].cycle(3)
-        #max = a > b ? a : b
         if item["new_file_indicate"].nil?
           v1_str="|-Version "+item["version1"][0,8]+" File name: "+item["file1"]+ " line cursor: <"
           v2_str="|-Version "+item["version2"][0,8]+" File name: "+item["file2"]+ " line cursor: >"

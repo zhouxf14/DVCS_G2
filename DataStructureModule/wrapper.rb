@@ -110,6 +110,8 @@ module DataStructure
 
         return commitName
     end
+    def DataStructure.merge_commit() 
+    end
 
     def DataStructure.log(commit = nil, output = "")
         commit = getHEAD() if !commit
@@ -243,8 +245,8 @@ module DataStructure
                     compare_info["version2"]=version2
                     compare_info["file1"]=line[0]
                     compare_info["file2"]=line[0]
-                    compare_info["file1_path"]=ARCHIVES+previousArchives1[line[0]]
-                    compare_info["file2_path"]=ARCHIVES+previousArchives2[line[0]]
+                    compare_info["file1_path"]=previousArchives1[line[0]]
+                    compare_info["file2_path"]=previousArchives2[line[0]]
                     #puts "--------------------------------------------------------------"
                     #puts "< : version1: "+version1+" filename:"+line[0]
                     #puts "> : version2 "+version2+" filename:"+line[0]
@@ -264,7 +266,7 @@ module DataStructure
                     compare_info["new_file_indicate"]="version1"
                     compare_info["version1"]=version1
                     compare_info["file1"]=line[0]
-                    compare_info["file1_path"]=ARCHIVES+previousArchives1[line[0]]
+                    compare_info["file1_path"]=+previousArchives1[line[0]]
                     #puts line[0]+" is a file in " + version1 + " not in " + version2
                     diff_result_list.push(compare_info)                    
                 end
@@ -276,7 +278,7 @@ module DataStructure
                     compare_info["new_file_indicate"]="version2"
                     compare_info["version2"]=version2
                     compare_info["file1"]=line[0]
-                    compare_info["file1_path"]=ARCHIVES+previousArchives2[line[0]]
+                    compare_info["file1_path"]=previousArchives2[line[0]]
                     #puts line[0]+" is a file in " + version2 + " not in " + version1
                     diff_result_list.push(compare_info)                     
                 end

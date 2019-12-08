@@ -80,7 +80,7 @@ class Dvcs  < Thor
   
     desc "merge BRANCH_1, BRANCH_2","Merge two revisions"
     def merge(branch_1,branch_2)
-        puts Merge.merge_return_back(branch_1, branch_2)
+        Merge.merge_return_back(branch_1, branch_2)
       # puts "this is merge function the branch1 is #{branch_1} the branch2 is #{branch_2}"
     end
   

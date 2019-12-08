@@ -6,6 +6,7 @@ require_relative 'status'
 require_relative 'heads'
 require_relative 'commit'
 require_relative 'cat'
+require_relative 'checkout'
 require_relative 'diff'
 require_relative 'merge'
 require_relative '../DataStructureModule/wrapper'
@@ -65,7 +66,8 @@ class Dvcs  < Thor
   
     desc "checkout BRANCH_NAME","Check out a specific revision"
     def checkout(bracnh_name)
-      puts "this is checkout function the branch name is #{bracnh_name}"
+        Checkout.checkout_return_back(bracnh_name)
+      # puts "this is checkout function the branch name is #{bracnh_name}"
     end
   
     desc "commit UPDATE_COMMENT","Commit changes"
@@ -86,7 +88,8 @@ class Dvcs  < Thor
   
     desc "pull REMOTE_LOCATION","Pull the changes from another repository"
     def pull(remote_location)
-      puts "this is pull funciton the remote_location is #{remote_location}"
+      Pull.pull_return_back(remote_location)
+      # puts "this is pull funciton the remote_location is #{remote_location}"
     end
   
     desc "push REMOTE_LOCATION","Push changes into another repository"

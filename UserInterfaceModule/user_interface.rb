@@ -89,8 +89,8 @@ class Dvcs  < Thor
   
     desc "pull REMOTE_LOCATION","Pull the changes from another repository"
     def pull(remote_location)
-      Pull.pull_return_back(remote_location)
-      # puts "this is pull funciton the remote_location is #{remote_location}"
+        Pull.pull_return_back(remote_location)
+        # puts "this is pull funciton the remote_location is #{remote_location}"
     end
   
     desc "push REMOTE_LOCATION","Push changes into another repository"

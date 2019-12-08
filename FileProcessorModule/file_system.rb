@@ -175,7 +175,7 @@ module FileSystem
     file_list=` find  -type f -not -path "./.dvcs/*" `
     return file_list
   end
-  
+
   #rm_folder removes all children of a folder, except anything named 'dvcs'. point it at the working directory!
   def rm_folder(directory)
     #if on mac
@@ -214,6 +214,9 @@ module FileSystem
         end
       end
     end
+  end
+  def merge_two_file(file1,file2,file3)
+    m=`cat #{file1} #{file2} |sort| uniq > #{file3}`
   end
   
   

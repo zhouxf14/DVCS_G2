@@ -16,6 +16,7 @@ module DataStructure
     ARCHIVES = OBJECTS + "archives/"
     BRANCHES = ROOT + "refs/"
     CURRENT_BRANCH = ROOT + "info/branch"
+    TEMP= ROOT + "objects/temp/"
 
     class FS
         include FileSystem
@@ -110,13 +111,48 @@ module DataStructure
 
         return commitName
     end
-    def DataStructure.merge_commit() 
+    def DataStructure.merge_commit(merge_info,branch_1,branch_2)
+        fileText = "Merge version1: "+branch_1+" version2: "+branch_2+ "\n" +
+                   getUser() + "\n" +
+                   Time.now.to_s + "\n" +
+                   branch_1 +" "+ branch_2 + "\n"
+    
+        
+
+        merge_info.each{ |compare_info|
+
+            if compare_info["include_indicate"]
+                fileText += compare_info["file_name"] + " " + compare_info["file_path"] + "\n"
+            elsif compare_info["same_indicate"]
+                fileText += compare_info["file_name"] + " " + compare_info["file_path"] + "\n"
+            elsif compare_info["conflict_indicate"]
+
+                @@fp.merge_two_file(ARCHIVES+compare_info["file_path_c1"],ARCHIVES+compare_info["file_path_c2"],TEMP+compare_info["file_name_c"])
+
+                archiveName = hash(compare_info["file_name_c"] + @@fp.read(TEMP+compare_info["file_name_c"]))
+
+                @@fp.store(TEMP+compare_info["file_name_c"], ARCHIVES + archiveName) unless @@fp.check_file_exists(ARCHIVES + archiveName)
+
+                @@fp.remove_file(TEMP+compare_info["file_name_c"])
+
+                fileText += compare_info["file_name_c"] + " " + archiveName +"\n"
+            elsif compare_info["new_file_indicate"]
+                fileText += compare_info["file_name"] + " " + compare_info["file_path"] + "\n"
+            end
+        }
+        commitName = hash(fileText)
+        @@fp.new_file(COMMITS + commitName, fileText)
+        @@fp.new_file(HEAD, commitName)
+        @@fp.new_file(BRANCHES + @@fp.read(CURRENT_BRANCH), commitName)
+        
+        return commitName.to_s
+
     end
 
     def DataStructure.log(commit = nil, output = "")
         commit = getHEAD() if !commit
         return output if commit == "null"
-
+        commit=commit[0,40]
         return log(@@fp.get_line(COMMITS + commit,4),
             output +
             "commit " + commit + "\n" +
@@ -266,7 +302,7 @@ module DataStructure
                     compare_info["new_file_indicate"]="version1"
                     compare_info["version1"]=version1
                     compare_info["file1"]=line[0]
-                    compare_info["file1_path"]=+previousArchives1[line[0]]
+                    compare_info["file1_path"]=previousArchives1[line[0]]
                     #puts line[0]+" is a file in " + version1 + " not in " + version2
                     diff_result_list.push(compare_info)                    
                 end

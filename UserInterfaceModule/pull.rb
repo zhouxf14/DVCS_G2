@@ -9,11 +9,12 @@ module Pull
   	local_status = DataStructure.status
   	if (local_status.include? "Not Committed" || local_status.include? "Uncommitted Changes" || local_status.include? "Deleted") {
   		puts Merge.merge_return_back(local_head, remote_head)
+  		#todo: how to deal with the uncommitted changes?
   	} else {
-  		FileSystem.get_remote_repo(remote_location, Dir.pwd)
   		if (local_head == remote_head) {
   			puts "It's already the latest version"
   		} else {
+  			puts Merge.merge_return_back(local_head, remote_head)
   			puts "The latest version has been pulled successfully"
   		}
   	}

@@ -95,7 +95,8 @@ class Dvcs  < Thor
   
     desc "push REMOTE_LOCATION","Push changes into another repository"
     def push(remote_location)
-      puts "this is push function the remote_location is #{remote_location}"
+        Push.push_return_back(remote_location)
+        # puts "this is push function the remote_location is #{remote_location}"
     end
   
   end

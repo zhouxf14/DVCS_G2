@@ -182,7 +182,7 @@ module FileSystem
     if Dir.children(directory).include?(".DS-Store")
       Dir.children(directory).each do |child|
         name = directory + "/" + child
-        if child == "dvcs"
+        if child == ".dvcs"
           #do nothing
         else
           #remove the folder or file
@@ -200,7 +200,7 @@ module FileSystem
       Dir.children(directory).each do |child|
         name = directory + "/" + child
         #check if its dvcs
-        if child == "dvcs"
+        if child == ".dvcs"
           #do nothing
         else
           #remove the folder or file

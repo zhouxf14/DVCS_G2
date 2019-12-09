@@ -96,7 +96,7 @@ module DataStructure
                 # or check an old commit or do any sor of file comparison.
                 archiveName = hash(line + @@fp.read(line))
                 @@fp.store(line, ARCHIVES + archiveName) unless @@fp.check_file_exists(ARCHIVES + archiveName)
-                fileText += line + " " + archiveName + "\n"
+                fileText += line + "\0" + archiveName + "\n"
             else
                 #TODO - If file doesn't exist we can presumably remove it from the index
                 puts "File #{line} does not exist."
@@ -174,13 +174,20 @@ module DataStructure
             @@fp.new_file(CURRENT_BRANCH, branch)
             return "#{branch} added as new branch"
         else
+            newHEAD =  @@fp.read(BRANCHES + branch) #Commit filename
             #Here I delete all the files in the repository
+            @@fp.rm_folder(".")
             #Then I build them all anew from the archives
-            
-            #Code I want but not yet
-            #@@fp.new_file(HEAD, @@fp.read(BRANCHES + branch))
-            #@@fp.new_file(CURRENT_BRANCH, branch)
-            return "Oh no :O"
+            lineno = 0
+            @@fp.read_lines(COMMITS + newHEAD){ |line|
+                lineno += 1;
+                @@fp.restore(*line.insert(-41,ARCHIVES).split("\0").reverse) if lineno > 4
+            } unless newHEAD == "null"
+
+            #Then update the tracker files
+            @@fp.new_file(HEAD, newHEAD)
+            @@fp.new_file(CURRENT_BRANCH, branch)
+            return "Switched to #{branch} branch"
         end        
     end
 
@@ -189,7 +196,7 @@ module DataStructure
         
         @@fp.read_lines(COMMITS + head){ |line| 
             lineno += 1; 
-            previousArchives.store(*line.split) if lineno > 4
+            previousArchives.store(*line.split("\0")) if lineno > 4
         } unless head == "null"
 
         @@fp.read_lines(INDEX) { |line|
@@ -216,7 +223,7 @@ module DataStructure
 
             @@fp.read_lines(COMMITS + head){ |line|     # get all version1 files in repository
                 lineno += 1; 
-                previousArchives.store(*line.split) if lineno > 4
+                previousArchives.store(*line.split("\0")) if lineno > 4
                 } unless head == "null"
                 
                 files.each{ |line|                          #compare those files
@@ -264,13 +271,13 @@ module DataStructure
             previousArchives1 = Hash.new; lineno1 = 0; head1 = version1
             @@fp.read_lines(COMMITS + head1){ |line|     # get all version2 files in repository
                 lineno1 += 1; 
-                previousArchives1.store(*line.split) if lineno1 > 4
+                previousArchives1.store(*line.split("\0")) if lineno1 > 4
                 } unless head1 == "null"
 
             previousArchives2 = Hash.new; lineno2 = 0; head2 = version2
             @@fp.read_lines(COMMITS + head2){ |line|     # get all version2 files in repository
                     lineno2 += 1; 
-                    previousArchives2.store(*line.split) if lineno2 > 4
+                    previousArchives2.store(*line.split("\0")) if lineno2 > 4
             } unless head1 == "null"
                 
             previousArchives1.each{ |line|
@@ -328,7 +335,7 @@ module DataStructure
 
         @@fp.read_lines(COMMITS + head){ |line|     # get all version2 files in repository
             lineno += 1; 
-            previousArchives.store(*line.split) if lineno > 4
+            previousArchives.store(*line.split("\0")) if lineno > 4
             } unless head == "null"
         
         return previousArchives
@@ -349,7 +356,7 @@ module DataStructure
         result = Hash.new; previousArchives = Hash.new; lineno = 0; head = version
         @@fp.read_lines(COMMITS + head){ |line| 
             lineno += 1; 
-            previousArchives.store(*line.split) if lineno > 4
+            previousArchives.store(*line.split("\0")) if lineno > 4
         } unless head == "null"
         if previousArchives.key?(filename)
             return ARCHIVES+previousArchives[filename]
@@ -361,7 +368,7 @@ module DataStructure
 end 
 
 def main()
-    puts DataStructure.checkout("master")
+    puts DataStructure.checkout("new branch 1")
 end      
 
 if __FILE__ == $0

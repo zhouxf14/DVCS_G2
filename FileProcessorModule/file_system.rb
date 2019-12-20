@@ -218,7 +218,11 @@ module FileSystem
   def merge_two_file(file1,file2,file3)
     m=`cat #{file1} #{file2} |sort| uniq > #{file3}`
   end
+
+  def copy_complete_folder(s_path,d_path)
+    m=`cp -r #{s_path} #{d_path}`
   
+  end
   
 end
 

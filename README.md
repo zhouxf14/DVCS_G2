@@ -17,7 +17,7 @@ Note: our system runs in Linux
         ruby PATH/dvcs.rb add <file>
         ruby PATH/dvcs.rb remove <file>
         ruby PATH/dvcs.rb status
-        ruby PATH/dvcs.rb clone <path>
+        ruby PATH/dvcs.rb clone <path> # The path should be a repository folder path and current folder should not be a repository
         ruby PATH/dvcs.rb commit <message>
         ruby PATH/dvcs.rb head
         ruby PATH/dvcs.rb log     #show the version id 
